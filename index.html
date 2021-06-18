@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Intriguing Properties of Contrastive Losses</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+    <link rel="stylesheet" href="assets/css/Highlight-Clean.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/Team-Clean.css">
+</head>
+
+<body>
+
+
+    <div class="highlight-clean" style="padding-bottom: 10px;">
+        <div class="container">
+            <h1 class="text-center">Intriguing Properties of Contrastive Losses</h1>
+        </div>
+        <div class="container" style="max-width: 650px;">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="text-center" style="margin: 0px;">Ting Chen</h5>
+                    <h6 class="text-center">Google Research</h6>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-center" style="margin: 0px;">Calvin Luo</h5>
+                    <h6 class="text-center">Google Research</h6>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-center" style="margin: 0px;">Lala Li</h5>
+                    <h6 class="text-center">Google Research</h6>
+                </div>
+            </div>
+        </div>
+        <!--div class="buttons" style="margin-bottom: 8px;"><a class="btn btn-primary" role="button" href="assets/denoising_diffusion20.pdf">Paper (high-res, 98 MB)</a><a class="btn btn-light" role="button" href="https://arxiv.org/abs/2006.11239">Paper (arXiv, 10 MB)</a><a class="btn btn-light" role="button" href="https://github.com/hojonathanho/diffusion">GitHub</a></div-->
+        <!--div class="container" style="max-width: 650px;">
+            <div class="row">
+                <div class="col-md-12 text-center"><img src="assets/img/denoising_diffusion_all.png" style="width: 100%;margin-bottom: 8px;" alt="Samples from denoising diffusion probabilistic models trained on CelebA-HQ, LSUN Bedrooms, LSUN church and LSUN cat datasets at 256x256 resolution"><em>Images generated unconditionally by our probabilistic model.<br>These are not real people, places, animals or objects.</em></div>
+            </div>
+        </div>
+    </div-->
+    <hr style="max-width: 650px;">
+    <div class="container" style="max-width: 650px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Summary</h2>
+                In this work we study the effectiveness, limitations, and intriguing properties of existing contrastive learning methods. Our main findings and contributions are summarized as: <br><br>
+                <ul>
+                    <li>We propose a generalized contrastive loss, and show that differences between contrastive losses are small with a deep projection head.</li>
+                    <li>We show that the instance-based objective widely used in existing contrastive learning methods can learn on images with multiple objects, and also learn meaningful local features despite operating on global image representation.</li>
+                    <li>We construct three datasets with explicit and controllable competing features to systematically study the feature suppression effect in contrastive learning.</li>
+                    <li>We show that a few bits of easy-to-learn shared features can suppress, and even fully prevent, the learning of other sets of competing features. In scenarios where there are multiple objects in an image, the dominant object would suppress the learning of smaller objects. This poses open challenges to existing contrastive learning.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <hr style="max-width: 650px;">
+    <div class="container" style="max-width: 650px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Abstract</h2>
+                <p>Contrastive loss and its variants have become very popular recently for learning visual representations without supervision.
+                   In this work, we study three intriguing properties of contrastive learning. 
+                   We first generalize the standard contrastive loss to a broader family of losses, and we find that various instantiations of the generalized loss perform similarly under the presence of a multi-layer non-linear projection head. 
+                   We then study if instance-based contrastive learning (such as in SimCLR, MoCo, BYOL, and so on, which are based on global image representation) can learn well on images with multiple objects present. 
+                   We find that meaningful hierarchical local features can be learned despite the fact that these objectives operate on global instance-level features.<br><br>
+
+                   Finally, we study an intriguing phenomenon of <em>feature suppression</em> among competing features shared across augmented views, such as "color distribution" vs "object class". 
+                   We construct datasets with explicit and controllable competing features, and show that, for contrastive learning, a few bits of easy-to-learn shared features can suppress, and even fully prevent, the learning of other sets of competing features. 
+                   In scenarios where there are multiple objects in an image, the dominant object would suppress the learning of smaller objects. 
+                   Existing contrastive learning methods critically rely on data augmentation to favor certain sets of features over others, and face potential limitation for scenarios where existing augmentations cannot fully address the feature suppression. 
+                   This poses open challenges to existing contrastive learning techniques.
+                </p>
+            </div>
+        </div>
+    </div>
+    <hr style="max-width: 650px;">
+    <div class="container" style="max-width: 650px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Differences Between Contrastive Losses</h2>
+                In this work, we generalize the standard contrastive loss to the following form:
+                <img class="img-fluid" src="assets/img/eq1.png" style="margin-top: 16px;margin-bottom: 8px;" width="450" height="450"><br>
+                The standard contrastive loss can then be re-written as follows (scaled by a constant &tau;):
+                <img class="img-fluid" src="assets/img/eq2.png" style="margin-top: 16px;margin-bottom: 8px;"><br>
+                We demonstrate that performance across different generalized contrastive losses is similar, when using a deep projection head.
+                <img class="img-fluid" src="assets/img/comps.png" style="margin-top: 16px;margin-bottom: 8px;"><br>
+            </div>
+        </div>
+    </div>
+    <hr style="max-width: 650px;">
+    <div class="container" style="max-width: 650px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Instance-based objective can learn on images with multiple objects</h2>
+                Commonly used self-supervised learning datasets, such as MNIST, CIFAR-10, ImageNet, are object centered, i.e. the image is mainly occupied by a single (dominant) object. To experiment with multiple objects in a controllable setting, we propose a new dataset called <b>MultiDigits</b>, that is generated by placing multiple MNIST digits (28 × 28 size) on a shared blank canvas (112 × 112 size) in a non-overlapping fashion. <br><br>
+                We find that representations learned using supervised loss maintains its quality when up to 8 digits are placed in the image. After that the representation becomes worse as the canvas gets more crowded. Notably, representations learned using SimCLR display a similar phenomenon. Regardless of placement strategy, top-1 accuracy stays at the same level up to 8 digits, demonstrating that SimCLR can learn from images with multiple objects. In addition, the increased performance gap between the two placement strategies with increased number of digits shows that object overlapping makes it harder for contrastive losses to learn from multiple objects.
+            </div>
+        </div>
+    </div>
+
+    <hr style="max-width: 650px;">
+    <div class="container" style="max-width: 650px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Instance-based objective can learn good local features</h2>
+                To understand the local features learned by SimCLR, we apply K-means on intermediate features of the SimCLR learned ResNet, and see how local regions of an image are grouped together. For good representations, we expect that regions of similar objects should be grouped together.<br><br>
+                Specifically, we take a pretrained Resnet-50 2X model with selective kernels, and run inference on validation images from ImageNet and COCO. We run K-means with various numbers of clusters on the l2-normalized hidden features from middle layers of the network (e.g. block group 2,3,4 of the ResNet). We also compare SimCLR learned features with supervised learned features, as well as the raw pixel (RGB) features extracted from the corresponding image patches. We find that SimCLR and supervised learning are able to discover meaningful local features. Furthermore, comparing ResNet intermediate features at different layers suggests that earlier layers contain more edge-related features, while later layers contain more object/part features<br><br>
+                Below, we provide a comparison across different methods and ResNet block groups for 2500 validation images from ImageNet and COCO. A full Google Drive containing just the <a href="https://drive.google.com/drive/folders/19WhKHqueJFdC8pYcuF6DHsJlKSxowIxz">methods comparisons</a> and <a href="https://drive.google.com/drive/folders/1wIAfpcYzsBo_RFAOsXLg4M0vvGjFaFCC">block group comparisons</a> are linked.
+            </div>
+        </div>
+    </div>
+<table class="center">
+  <tr>
+    <td>
+      <div class="imgContainer">
+        <div>
+          <img src="https://drive.google.com/uc?export=view&id=12h8DcKTZwFdM86IwbtWvgEEVSzLZOiHo" id="imagenet_methods" width="500" height="500"/>
+        </div>
+      </div>
+    </td>
+    <td>
+      <div class="imgContainer">
+        <div>
+          <img src="https://drive.google.com/uc?export=view&id=19WgCX6ya1DoYysxLI4tLKEkiIz9j2rXL" id="imagenet_bgs" width="500" height="500"/>
+        </div>
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan=2>
+      <div class="caption">ImageNet visualizations. Images on the left denote different methods, where images on the right denote different block groups.</div>
+      <div class="imgButton">
+        <button class="btn btn-primary" value="button" id="imagenet_btn">Next Image</button>
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <div class="imgContainer">
+        <div>
+          <img src="https://drive.google.com/uc?export=view&id=1yO7VR6EPVMpJiyl3I9V7o4fY6hwrZ1Ku" id="coco_methods" width="500" height="500"/>
+        </div>
+      </div>
+    </td>
+    <td>
+      <div class="imgContainer">
+        <div>
+          <img src="https://drive.google.com/uc?export=view&id=1Yn7fw8I4rirPg4hc8QRpQ3Cn0LRH18Ot" id="coco_bgs" width="500" height="500"/>
+        </div>
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan=2>
+      <div class="caption">Coco visualizations. Images on the left denote different methods, where images on the right denote different block groups.</div>
+      <div class="imgButton">
+        <button class="btn btn-primary" value="button" id="coco_btn">Next Image</button>
+      </div>
+    </td>
+  </tr>
+
+</table>
+
+
+    <hr style="max-width: 650px;">
+    <div class="container" style="max-width: 650px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Feature suppression limits the potential of contrastive learning</h2>
+                In contrastive learning, the presence of "color distribution" features suppresses the competing features of "object classes".  This is typically addressed by color augmentation; however, there may be scenarios where known augmentations cannot fully address this feature suppression effect.  We quantitatively study the feature suppression phenomenon by constructing datasets with explicit and controllable competing features, and see how well contrastive learning methods continue to perform.<br><br>
+
+                We create three datasets: <b>DigitOnImageNet</b> where MNIST digits are overlaid on ImageNet images via channel addition, <b>Modified MultiDigits</b> where only two digits are considered but one of them is of a varying size, and <b>RandBit</b> where a real image is concatenated with an image of a random integer in the channel dimension. <br><br>
+
+                On the DigitOnImageNet daaset, we discover a performance trade-off between digit recognition ability and object recognition ability. This shows that simple features suppress the learning of difficult features, when both are shared between two augmented views. It is therefore difficult to learn both of the competing features using existing contrastive losses. <br><br>
+
+                On the Modified MultiDigits dataset, we find that the learned representations of the smaller digit degenerate significantly when the size of the other digit increases, whereas the dominant object can still be learned well. Therefore, large objects can suppress the learning of features of smaller objects. <br><br>
+
+                On the RandBit dataset, we observe that even adding a few bits of a competing feature will quickly destroy linear evaluation accuracy. 
+                
+        </div>
+    </div>
+    <!--Citation-->
+    <!--hr style="max-width: 650px;">
+    <div class="container" style="max-width: 650px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Citation</h2>
+                <code>@article{<br>}<br></code></div>
+        </div>
+    </div-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="assets/js/imagenet.js"></script>
+    <script src="assets/js/coco.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+<br><br><center><p>We would like to thank <a href="https://ajayj.com/">Ajay Jain</a> for the website template!</p></center>
+</html>
