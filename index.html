@@ -116,8 +116,8 @@
             <div class="col-md-12">
                 <h2>Instance-based objective can learn good local features</h2>
                 To understand the local features learned by SimCLR, we apply K-means on intermediate features of the SimCLR learned ResNet, and see how local regions of an image are grouped together. For good representations, we expect that regions of similar objects should be grouped together.<br><br>
-                Specifically, we take a pretrained Resnet-50 2X model with selective kernels, and run inference on validation images from ImageNet and COCO. We run K-means with various numbers of clusters on the l2-normalized hidden features from middle layers of the network (e.g. block group 2,3,4 of the ResNet). We also compare SimCLR learned features with supervised learned features, as well as the raw pixel (RGB) features extracted from the corresponding image patches. We find that SimCLR and supervised learning are able to discover meaningful local features. Furthermore, comparing ResNet intermediate features at different layers suggests that earlier layers contain more edge-related features, while later layers contain more object/part features<br><br>
-                Below, we provide a comparison across different methods and ResNet block groups for 2500 validation images from ImageNet and COCO. A full Google Drive containing just the <a href="https://drive.google.com/drive/folders/19WhKHqueJFdC8pYcuF6DHsJlKSxowIxz">methods comparisons</a> and <a href="https://drive.google.com/drive/folders/1wIAfpcYzsBo_RFAOsXLg4M0vvGjFaFCC">block group comparisons</a> are linked.
+                Specifically, we take a pretrained Resnet-50 2X model with selective kernels, and run inference on validation images from ImageNet and COCO. We run K-means with various numbers of clusters on the l2-normalized hidden features from middle layers of the network (e.g. block group 2,3,4 of the ResNet), and recolor the patches of the original image that the features represent. We also compare between SimCLR-learned features, supervised-learned features, as well as raw pixel (RGB) features extracted from the corresponding image patches. We find that SimCLR and supervised learning are able to discover meaningful local features. Furthermore, comparing ResNet intermediate features at different layers suggests that earlier layers contain more edge-related features, while later layers contain more object/part features.<br><br>
+                Below, we provide a comparison across different methods and ResNet block groups for 2500 validation images from ImageNet and COCO, using bilinear interpolation on the recolorization grid. Visualization using nearest neighbor interpolation can also be toggled. A full Google Drive containing methods comparison for <a href="https://drive.google.com/drive/folders/12oC5NLhsX9nobYsGki7jfR0WIfnalFxO">ImageNet</a> and <a href="https://drive.google.com/drive/folders/1ZDU7L0Me7rOQc319ZAKlL0BIlAwd0VH_">COCO</a>, as well as block group comparison for <a href="https://drive.google.com/drive/folders/1YzhJqpSQvMzdelsTfPkVs084nByyCw6r">ImageNet</a> and <a href="https://drive.google.com/drive/folders/1ZzgNI-sjYpVAC7LH7QpIm8nyfU6psJS7">Coco</a> are linked.
             </div>
         </div>
     </div>
@@ -126,14 +126,14 @@
     <td>
       <div class="imgContainer">
         <div>
-          <img src="https://drive.google.com/uc?export=view&id=12h8DcKTZwFdM86IwbtWvgEEVSzLZOiHo" id="imagenet_methods" width="500" height="500"/>
+          <img src="assets/img/multi/img_methods_bi.jpeg" id="imagenet_methods" width="500" height="500"/>
         </div>
       </div>
     </td>
     <td>
       <div class="imgContainer">
         <div>
-          <img src="https://drive.google.com/uc?export=view&id=19WgCX6ya1DoYysxLI4tLKEkiIz9j2rXL" id="imagenet_bgs" width="500" height="500"/>
+          <img src="assets/img/multi/img_bg_bi.jpeg" id="imagenet_bgs" width="500" height="500"/>
         </div>
       </div>
     </td>
@@ -141,6 +141,11 @@
 
   <tr>
     <td colspan=2>
+      <div class="imgCheckbox">
+        <input type="checkbox" id="methods_ck" name="methods_ck" value="nn">
+        <label for="methods_ck">Nearest Neighbors Visualization</label>
+        <br>
+      </div>
       <div class="caption">ImageNet visualizations. Images on the left denote different methods, where images on the right denote different block groups.</div>
       <div class="imgButton">
         <button class="btn btn-primary" value="button" id="imagenet_btn">Next Image</button>
@@ -152,14 +157,14 @@
     <td>
       <div class="imgContainer">
         <div>
-          <img src="https://drive.google.com/uc?export=view&id=1yO7VR6EPVMpJiyl3I9V7o4fY6hwrZ1Ku" id="coco_methods" width="500" height="500"/>
+          <img src="assets/img/multi/coco_methods_bi.jpeg" id="coco_methods" width="500" height="500"/>
         </div>
       </div>
     </td>
     <td>
       <div class="imgContainer">
         <div>
-          <img src="https://drive.google.com/uc?export=view&id=1Yn7fw8I4rirPg4hc8QRpQ3Cn0LRH18Ot" id="coco_bgs" width="500" height="500"/>
+          <img src="assets/img/multi/coco_bg_bi.jpeg" id="coco_bgs" width="500" height="500"/>
         </div>
       </div>
     </td>
@@ -167,6 +172,11 @@
 
   <tr>
     <td colspan=2>
+      <div class="imgCheckbox">
+        <input type="checkbox" id="blocks_ck" name="blocks_ck" value="nn">
+        <label for="blocks_ck">Nearest Neighbors Visualization</label>
+        <br>
+      </div>
       <div class="caption">Coco visualizations. Images on the left denote different methods, where images on the right denote different block groups.</div>
       <div class="imgButton">
         <button class="btn btn-primary" value="button" id="coco_btn">Next Image</button>
